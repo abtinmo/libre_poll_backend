@@ -1,4 +1,5 @@
 import psycopg2
+from sanic import response
 
 
 def makeConn():
@@ -11,21 +12,42 @@ def makeConn():
 
 def insertUser(json):
     sql = "INSERT INTO poll(username , password , email)  VALUES(%s , %s , %s);"
-    params =[json['username'] , json['password'],json['email']]
+    try:
+        username = json['username']
+    except KeyError:
+        return response.json({'message': 'Username Empty'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+    try:
+        password = json['password']
+    except KeyError:
+        return response.json({'message': 'Password Empty'},
+                   headers={'X-Served-By': 'sanic'},
+                   status=401)
+    try:
+        email = json['email']
+    except KeyError:
+        email = None
     conn = None
     try:
         conn = makeConn()
         cur = conn.cursor()
-        cur.execute( sql, params  )
+        cur.execute( sql, (username , password , email) )
         cur.close()
         conn.commit()
-        result = 0
+        result = True
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-        result = 1
+        result = False
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+    if result:
+        return response.json({'message': 'OK!'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=200)
+    else:
+        return response.json({'message': 'Failure'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
 
-    return result
