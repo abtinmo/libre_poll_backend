@@ -1,14 +1,13 @@
+from .config import db_config
 import psycopg2
 from sanic import response
-from .config import db_config , secrect_key
-import jwt
+from .functions import buildToken
 
 def makeConn():
     return  psycopg2.connect(db_config)
 
-
-def insertUser(json):
-    sql = "INSERT INTO users(username , password , email)  VALUES(%s , %s , %s);"
+def getToken(json):
+    sql = '''SELECT user_id FROM users WHERE username = %s and password = %s'''
     try:
         username = json['username']
     except KeyError:
@@ -21,31 +20,27 @@ def insertUser(json):
         return response.json({'message': 'Password Empty'},
                    headers={'X-Served-By': 'sanic'},
                    status=401)
-    try:
-        email = json['email']
-    except KeyError:
-        email = None
     conn = None
     try:
         conn = makeConn()
         cur = conn.cursor()
-        cur.execute( sql, (username , password , email) )
+        cur.execute( sql, (username , password))
+        userid = cur.fetchone()
         cur.close()
         conn.commit()
-        result = True
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-        result = False
     finally:
         if conn is not None:
             conn.close()
-    if result:
-        return response.json(
-                    {'message':'OK!'},
-                    headers={'X-Served-By': 'sanic'},
-                    status=200)
+    peint(userid)
+    if(userid):
+        return response.json({"message":"OK"},
+            headers={'X-Served-By': 'sanic'},
+            status=200)
     else:
         return response.json({'message': 'Failure'},
-                    headers={'X-Served-By': 'sanic'},
-                    status=401)
+        headers={'X-Served-By': 'sanic'},
+        status=401)
+
 
