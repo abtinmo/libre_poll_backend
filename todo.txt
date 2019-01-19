@@ -2,4 +2,4 @@ db/functions/tokenIsValid
 
 view/setemail
 view/eamilexists
-view/userexists
+view/userexists --> alirezahs_git is doing this!
