@@ -33,9 +33,9 @@ def getToken(json):
     finally:
         if conn is not None:
             conn.close()
-    peint(userid)
+    print(userid)
     if(userid):
-        return response.json({"message":"OK"},
+        return response.json({"message":"OK","token":buildToken(username) },
             headers={'X-Served-By': 'sanic'},
             status=200)
     else:

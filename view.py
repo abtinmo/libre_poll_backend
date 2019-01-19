@@ -23,8 +23,34 @@ async def adduser(request):
 
 
 @bp.route("/gettoken" , methods=["GET"])
-def getToken(request):
-    print(request.json)
+async def gettoken(request):
+    """
+    if user is in database , retorns token
+    """
     return  getToken(request.json)
 
+
+
+@bp.route("/userexists", methods=["POST"])
+async def userexists(request):
+    """
+    if user is in database return false
+    """
+    pass
+
+
+@bp.route("/emailexists" , methods=["POST"])
+async def emailexists(request):
+    """
+    if email is in database return false
+    """
+    pass
+
+
+@bp.route("/setemail" , methods=["POST"])
+async def setemail(request):
+    """
+    gets email and decodes the token , updates email for user in database
+    """
+    pass
 
