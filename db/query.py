@@ -65,10 +65,42 @@ def userExists(json):
         if conn is not None:
             conn.close()
     if username2 == None :
-        return response.json({"userexists": True},
+        return response.json({'userexists': True},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
     else:
         return response.json({'userexists': False},
             headers={'X-Served-By': 'sanic'},
             status=200)
+
+def emailExists(json):
+    sql = '''SELECT email FROM users WHERE email= %s;'''
+    try:
+        email = json["email"]
+    except KeyError:
+        return response.json({'message': 'Email Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
+    conn = None
+    try:
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql, (email,))
+        email2 = cur.fetchone()
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+    # if email is in database return false
+    if email2== None:
+        return response.json({'emailexists': True},
+                             headers={'X-Served-By': 'sanic'},
+                             status=200)
+    else:
+        return response.json({'emailexists': False},
+                             headers={'X-Served-By': 'sanic'},
+                             status=200)
