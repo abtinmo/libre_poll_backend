@@ -42,5 +42,32 @@ def getToken(json):
         return response.json({'message': 'Failure'},
         headers={'X-Served-By': 'sanic'},
         status=401)
+  
+  def userExists(json):
+    sql = '''SELECT username FROM users WHERE username = %s;'''
+    try:
+        username = json['username']
+    except KeyError:
+        return response.json({'message': 'Username Empty'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+    conn = None
+    try:
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql,(username,))
+        username2 = cur.fetchone()
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+    # if user is in database return false
+    if username2 == None :
+        return True
+    else:
+        return False
 
 
