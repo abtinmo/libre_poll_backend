@@ -1,6 +1,7 @@
 import psycopg2
 from sanic import response
 from .config import db_config , secrect_key
+from .functions import tokenIsValid
 import jwt
 
 def makeConn():
@@ -49,3 +50,24 @@ def insertUser(json):
                     headers={'X-Served-By': 'sanic'},
                     status=401)
 
+
+def setEmail(token , email):
+    username = tokenIsValid(token)
+    if username:
+        sql = "UPDATE users SET email = %s WHERE username = %s"
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql ,(email , username))
+        conn.commit()
+        conn.close()
+        return response.json(
+                {'message':'OK'},
+                headers={'X-Served-By':'sanic'},
+                status=200)
+    
+    else:
+        return response.json({'message': 'Failure'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+
+    

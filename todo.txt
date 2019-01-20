@@ -1,3 +1,2 @@
-view/setemail
 view/eamilexists
 view/userexists

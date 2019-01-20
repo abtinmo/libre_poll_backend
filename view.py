@@ -1,6 +1,6 @@
 from sanic.blueprints import Blueprint
-from sanic.response import json 
-from db.insert import insertUser
+from sanic.response import json , text
+from db.insert import insertUser , setEmail
 from db.query import getToken
 
 bp = Blueprint('view_user')
@@ -22,7 +22,7 @@ async def adduser(request):
     return insertUser(request.json)
 
 
-@bp.route("/gettoken" , methods=["GET"])
+@bp.route("/gettoken" , methods=["POST"])
 async def gettoken(request):
     """
     if user is in database , retorns token
@@ -52,5 +52,8 @@ async def setemail(request):
     """
     gets email and decodes the token , updates email for user in database
     """
-    pass
+    token = request.headers.get('token')
+    email = request.json['email']
+    return setEmail(token , email) 
 
+        
