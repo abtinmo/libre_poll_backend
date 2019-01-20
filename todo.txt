@@ -1,5 +1,5 @@
-db/functions/tokenIsValid 
-
-view/setemail
 view/eamilexists
 view/userexists
+view/user/addpoll
+view/user/removepoll
+view/user/updatepoll #not sure
