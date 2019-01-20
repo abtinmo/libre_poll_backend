@@ -9,8 +9,11 @@ def buildToken(username):
     return jwt.encode({'sub':username},secrect_key , algorithm='HS256').decode('utf-8') 
 
 
-def tokenIsValid():
+def tokenIsValid(token):
     """
     get token an decodes username , if invalid returns False
     """
-    pass
+    try:
+        return jwt.decode(token ,secrect_key , algorithms='HS256')['sub']
+    except Exception:
+        return False
