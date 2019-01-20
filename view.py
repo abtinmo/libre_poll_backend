@@ -2,6 +2,7 @@ from sanic.blueprints import Blueprint
 from sanic.response import json 
 from db.insert import insertUser
 from db.query import getToken
+from db.query import userExists
 
 bp = Blueprint('view_user')
 
@@ -36,8 +37,7 @@ async def userexists(request):
     """
     if user is in database return false
     """
-    pass
-
+    return userExists(request.json)
 
 @bp.route("/emailexists" , methods=["POST"])
 async def emailexists(request):
