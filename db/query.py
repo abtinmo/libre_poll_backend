@@ -64,12 +64,13 @@ def userExists(json):
     finally:
         if conn is not None:
             conn.close()
+    # if username is in database return True
     if username2 == None :
-        return response.json({'userexists': True},
+        return response.json({'userexists': False},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
     else:
-        return response.json({'userexists': False},
+        return response.json({'userexists': True},
             headers={'X-Served-By': 'sanic'},
             status=200)
 
@@ -95,12 +96,12 @@ def emailExists(json):
         if conn is not None:
             conn.close()
 
-    # if email is in database return false
+    # if email is in database return True
     if email2== None:
-        return response.json({'emailexists': True},
+        return response.json({'emailexists': False},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
     else:
-        return response.json({'emailexists': False},
+        return response.json({'emailexists': True},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
