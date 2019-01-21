@@ -1,9 +1,7 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json , text
 from db.insert import insertUser , setEmail
-from db.query import getToken
-from db.query import userExists
-from db.query import emailExists
+from db.query import getToken , userExists , emailExists
 
 bp = Blueprint('view_user')
 

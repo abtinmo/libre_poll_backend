@@ -2,6 +2,7 @@ import psycopg2
 from sanic import response
 from .config import db_config , secrect_key
 from .functions import tokenIsValid
+import uuid
 import jwt
 
 def makeConn():
@@ -9,7 +10,7 @@ def makeConn():
 
 
 def insertUser(json):
-    sql = "INSERT INTO users(username , password , email)  VALUES(%s , %s , %s);"
+    sql = "INSERT INTO users( user_id , username , password , email)  VALUES(%s ,%s, %s , %s);"
     try:
         username = json['username']
     except KeyError:
@@ -22,15 +23,23 @@ def insertUser(json):
         return response.json({'message': 'Password Empty'},
                    headers={'X-Served-By': 'sanic'},
                    status=401)
+    if (len(username) < 1) or (len(password) <1):
+        return response.json({'message': 'Username or Password is to Short'},
+                   headers={'X-Served-By': 'sanic'},
+                   status=401)
+
     try:
         email = json['email']
     except KeyError:
         email = None
+    user_id = "User" + uuid.uuid4().hex[:15]
+
+
     conn = None
     try:
         conn = makeConn()
         cur = conn.cursor()
-        cur.execute( sql, (username , password , email) )
+        cur.execute( sql, (user_id , username , password , email) )
         cur.close()
         conn.commit()
         result = True
@@ -52,12 +61,13 @@ def insertUser(json):
 
 
 def setEmail(token , email):
-    username = tokenIsValid(token)
-    if username:
+
+    token_result = tokenIsValid(token)
+    if token_result["status"] == "OK":
         sql = "UPDATE users SET email = %s WHERE username = %s"
         conn = makeConn()
         cur = conn.cursor()
-        cur.execute(sql ,(email , username))
+        cur.execute(sql ,(email , token_result["user"]))
         conn.commit()
         conn.close()
         return response.json(

@@ -13,7 +13,11 @@ def tokenIsValid(token):
     """
     get token an decodes username , if invalid returns False
     """
+    result = {
+            "status":"OK"
+            }
     try:
-        return jwt.decode(token ,secrect_key , algorithms='HS256')['sub']
+        result["user"] =  jwt.decode(token ,secrect_key , algorithms='HS256')['sub']
     except Exception:
-        return False
+        result["status"] = "failure"
+        return result
