@@ -6,13 +6,13 @@
     LibrePoll Is A Tools For Creating And Sharing Polls, Free & OpenSource.
   </strong>
 <p align="center">
-  For React.js client side see: <a href="https://github.com/shervinmo/bungin-react"> LibrePoll React/a>
+  For React.js client side see: <a href="https://github.com/shervinmo/libre_poll_fronend">LibrePoll React</a>
 </p>
-<p align="center">
+<!-- <p align="center">
   <a href="https://example.org">
    Domain
   </a>
-</p>
+</p> -->
 
 <p align="center">
   <a href="https://github.com/shervinmo/libre_poll_backend/commits/master">
@@ -21,7 +21,7 @@
   <a href="https://travis-ci.com/shervinmo/libre_poll_backend">
     <img src="https://api.travis-ci.com/shervinmo/libre_poll_backend.svg?branch=master" alt="Current build status." />
   </a>
-    <img src="https://cdn.jsdelivr.net/gh/shervinmo/libre_poll_backend@master/coverage/badge-lines.svg" alt="Current test covarage status." />
+    <!-- <img src="https://cdn.jsdelivr.net/gh/shervinmo/libre_poll_backend@master/coverage/badge-lines.svg" alt="Current test covarage status." /> -->
   <a href="https://github.com/shervinmo/libre_poll_backend/#contributing">
     <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions" />
   </a>
