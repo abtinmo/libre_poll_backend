@@ -18,6 +18,7 @@ def tokenIsValid(token):
             }
     try:
         result["user"] =  jwt.decode(token ,secrect_key , algorithms='HS256')['sub']
+        return result
     except Exception:
         result["status"] = "failure"
         return result

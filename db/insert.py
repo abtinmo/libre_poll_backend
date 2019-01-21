@@ -61,7 +61,6 @@ def insertUser(json):
 
 
 def setEmail(token , email):
-
     token_result = tokenIsValid(token)
     if token_result["status"] == "OK":
         sql = "UPDATE users SET email = %s WHERE username = %s"
@@ -81,3 +80,25 @@ def setEmail(token , email):
                     status=401)
 
     
+
+def removeUser(token):
+    token_result = tokenIsValid(token)
+    if token_result['status'] == 'OK':
+        sql = "DELETE FROM users where username = %s ;"
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql ,( token_result["user"], ))
+        conn.commit()
+        conn.close()
+        return response.json(
+                {'message':'OK'},
+                headers={'X-Served-By':'sanic'},
+                status=200)
+    
+    else:
+        return response.json({'message': 'Failure'},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+
+        
+

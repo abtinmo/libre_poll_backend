@@ -1,4 +1,3 @@
 view/user/addpoll
-view/user/removeuser 
 view/user/removepoll
 view/user/updatepoll #not sure
