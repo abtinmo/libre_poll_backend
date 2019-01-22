@@ -64,7 +64,6 @@ def userExists(json):
     finally:
         if conn is not None:
             conn.close()
-    # if username is in database return True
     if username2 == None :
         return response.json({'userexists': False},
                              headers={'X-Served-By': 'sanic'},
