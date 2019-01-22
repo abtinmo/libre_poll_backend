@@ -1,6 +1,6 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json , text
-from db.insert import insertUser , setEmail
+from db.insert import insertUser , setEmail , addPoll
 from db.query import getToken
 from db.query import userExists
 from db.query import emailExists
@@ -55,6 +55,13 @@ async def setemail(request):
     """
     token = request.headers.get('token')
     email = request.json['email']
-    return setEmail(token , email) 
+    return setEmail(token , email)
 
-        
+@bp.route("/addpoll" , methods=["POST"])
+async def addpoll(request):
+    """
+    get token and poll information and add poll tp database
+    """
+    token = request.headers.get('token')
+    json = request.json
+    return addPoll(token , json)

@@ -2,6 +2,7 @@ import psycopg2
 from sanic import response
 from .config import db_config , secrect_key
 from .functions import tokenIsValid
+import uuid
 import jwt
 
 def makeConn():
@@ -64,10 +65,59 @@ def setEmail(token , email):
                 {'message':'OK'},
                 headers={'X-Served-By':'sanic'},
                 status=200)
-    
     else:
         return response.json({'message': 'Failure'},
                     headers={'X-Served-By': 'sanic'},
                     status=401)
 
-    
+
+def addPoll(token , json):
+    username = tokenIsValid(token)
+    if username:
+        sql = "INSERT INTO polls(name ,description ,place ,creator,uuid)  VALUES(%s , %s , %s, %s, %s);"
+        try:
+            name = json['name']
+        except KeyError:
+            return response.json({'message': 'Name Empty'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        try:
+            description = json['description']
+        except KeyError:
+            return response.json({'message': 'Description Empty'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        try:
+            place = json['place']
+        except KeyError:
+            return response.json({'message': 'Place Empty'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        Uuid = str(uuid.uuid4())
+        conn = None
+        try:
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.execute(sql, (name,description,place,username, Uuid,))
+            cur.close()
+            conn.commit()
+            result = True
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            result = False
+        finally:
+            if conn is not None:
+                conn.close()
+        if result:
+            return response.json(
+                {'message': 'OK!'},
+                headers={'X-Served-By': 'sanic'},
+                status=200)
+        else:
+            return response.json({'message': 'Failure'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+    else:
+        return response.json({'message': 'Failure',"username":username},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
