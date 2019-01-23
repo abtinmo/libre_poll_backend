@@ -2,6 +2,7 @@ from sanic import response
 from .functions import tokenIsValid , makeConn
 import psycopg2
 import uuid
+import json as js
 
 
 
@@ -12,17 +13,17 @@ def insertUser(json):
     except KeyError:
         return response.json({'message': 'Username Empty'},
                     headers={'X-Served-By': 'sanic'},
-                    status=401)
+                    status=406)
     try:
         password = json['password']
     except KeyError:
         return response.json({'message': 'Password Empty'},
                    headers={'X-Served-By': 'sanic'},
-                   status=401)
+                   status=406)
     if (len(username) < 1) or (len(password) <1):
         return response.json({'message': 'Username or Password is to Short'},
                    headers={'X-Served-By': 'sanic'},
-                   status=401)
+                   status=406)
 
     try:
         email = json['email']
@@ -51,9 +52,9 @@ def insertUser(json):
                     headers={'X-Served-By': 'sanic'},
                     status=200)
     else:
-        return response.json({'message': 'Failure'},
+        return response.json({'message': 'Somthing went wrong'},
                     headers={'X-Served-By': 'sanic'},
-                    status=401)
+                    status=500)
 
 
 def setEmail(token , email):
@@ -76,33 +77,31 @@ def setEmail(token , email):
 
 
 def addPoll(token , json):
-    username = tokenIsValid(token)
-    if username:
-        sql = "INSERT INTO polls(name ,description ,place ,creator,uuid)  VALUES(%s , %s , %s, %s, %s);"
-        try:
-            name = json['name']
-        except KeyError:
+    result = tokenIsValid(token)
+    if 'user' in result :
+        sql = "INSERT INTO polls(name ,description ,place ,options ,creator,uuid)  VALUES(%s , %s , %s, %s, %s , %s);"
+        if 'name' not in json:
             return response.json({'message': 'Name Empty'},
                                  headers={'X-Served-By': 'sanic'},
                                  status=401)
-        try:
-            description = json['description']
-        except KeyError:
-            return response.json({'message': 'Description Empty'},
+        if 'options' not in json:
+            return response.json({'message': 'Options Empty'},
                                  headers={'X-Served-By': 'sanic'},
                                  status=401)
-        try:
-            place = json['place']
-        except KeyError:
-            return response.json({'message': 'Place Empty'},
-                                 headers={'X-Served-By': 'sanic'},
-                                 status=401)
+        if 'place' not in json:
+            json['plcae'] = None
+        if 'description' not in json:
+            json['description'] = None
         Uuid = str(uuid.uuid4())
         conn = None
+        opts = js.dumps({k: 0 for k in json['options'] } )
+        print(opts)
+        params = [ json['name'] , json['description'] , json['place'] , opts ,
+                 result['user'] , Uuid  ]
         try:
             conn = makeConn()
             cur = conn.cursor()
-            cur.execute(sql, (name,description,place,username, Uuid,))
+            cur.execute(sql, params )
             cur.close()
             conn.commit()
             result = True
@@ -118,11 +117,11 @@ def addPoll(token , json):
                 headers={'X-Served-By': 'sanic'},
                 status=200)
         else:
-            return response.json({'message': 'Failure'},
+            return response.json({'message': 'Failure , somthing went wrong'},
                                  headers={'X-Served-By': 'sanic'},
-                                 status=401)
+                                 status=500)
     else:
-        return response.json({'message': 'Failure',"username":username},
+        return response.json({'message': 'Failure , Token invalid'},
                              headers={'X-Served-By': 'sanic'},
                              status=401)
     
@@ -142,7 +141,7 @@ def removeUser(token):
                 status=200)
     
     else:
-        return response.json({'message': 'Failure'},
+        return response.json({'message': 'Failure, Token invalid '},
                     headers={'X-Served-By': 'sanic'},
                     status=401)
 

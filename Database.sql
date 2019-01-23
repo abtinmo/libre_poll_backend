@@ -9,8 +9,9 @@ CREATE TABLE users (
 CREATE TABLE polls(
  creator VARCHAR(100) REFERENCES  users(username) ON DELETE CASCADE ,
  uuid UUID PRIMARY KEY , 
- name VARCHAR(300) NOT NULL, 
+ name VARCHAR(300) NOT NULL , 
  description TEXT , 
+ place VARCHAR(500) ,
  options TEXT NOT NULL ,
  create_time TIMESTAMP DEFAULT NOW() ,
  last_edit TIMESTAMP DEFAULT NOW() ) ;
