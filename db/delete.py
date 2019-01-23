@@ -5,13 +5,12 @@ import psycopg2
 
 def removePoll(token ,json ):
     if 'uuid' not  in json:
-        return response.json({'message': 'Username Empty'},
+        return response.json({'message': 'UUID Empty'},
                     headers={'X-Served-By': 'sanic'},
                     status=406)
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
         sql = "DELETE FROM polls where creator = %s  and uuid = %s;"
-        print(token_result['user'] , json['uuid'])
         params =[ token_result['user'] ,json['uuid']  ]
         conn = makeConn()
         cur = conn.cursor()
@@ -27,7 +26,6 @@ def removePoll(token ,json ):
         return response.json({'message': 'Failure, Token invalid '},
                     headers={'X-Served-By': 'sanic'},
                     status=401)
-
     
     
 
