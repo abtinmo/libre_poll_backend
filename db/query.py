@@ -1,10 +1,7 @@
-from .config import db_config
-import psycopg2
 from sanic import response
-from .functions import buildToken
+from .functions import buildToken , makeConn
+import psycopg2
 
-def makeConn():
-    return  psycopg2.connect(db_config)
 
 def getToken(json):
     sql = '''SELECT user_id FROM users WHERE username = %s and password = %s'''

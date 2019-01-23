@@ -1,12 +1,8 @@
-import psycopg2
 from sanic import response
-from .config import db_config , secrect_key
-from .functions import tokenIsValid
+from .functions import tokenIsValid , makeConn
+import psycopg2
 import uuid
-import jwt
 
-def makeConn():
-    return  psycopg2.connect(db_config)
 
 
 def insertUser(json):

@@ -1,5 +1,10 @@
 import jwt
-from .config import secrect_key
+import psycopg2
+from .config import db_config , secrect_key
+
+
+def makeConn():
+    return  psycopg2.connect(db_config)
 
 
 def buildToken(username):
