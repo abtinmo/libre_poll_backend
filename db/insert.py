@@ -95,7 +95,6 @@ def addPoll(token , json):
         Uuid = str(uuid.uuid4())
         conn = None
         opts = js.dumps({k: 0 for k in json['options'] } )
-        print(opts)
         params = [ json['name'] , json['description'] , json['place'] , opts ,
                  result['user'] , Uuid  ]
         try:
