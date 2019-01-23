@@ -124,24 +124,3 @@ def addPoll(token , json):
         return response.json({'message': 'Failure , Token invalid'},
                              headers={'X-Served-By': 'sanic'},
                              status=401)
-    
-
-def removeUser(token):
-    token_result = tokenIsValid(token)
-    if token_result['status'] == 'OK':
-        sql = "DELETE FROM users where username = %s ;"
-        conn = makeConn()
-        cur = conn.cursor()
-        cur.execute(sql ,( token_result["user"], ))
-        conn.commit()
-        conn.close()
-        return response.json(
-                {'message':'OK'},
-                headers={'X-Served-By':'sanic'},
-                status=200)
-    
-    else:
-        return response.json({'message': 'Failure, Token invalid '},
-                    headers={'X-Served-By': 'sanic'},
-                    status=401)
-

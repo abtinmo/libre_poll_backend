@@ -1,4 +1,3 @@
-view/user/removepoll
 view/user/editpoll
 view/user/getvotes    == > get all votes with given username ,get user name with token
 view/user/vote   ==> add users vote to the poll , updates poll table and adds new row to votes table , get username with token and poll_id with json

@@ -1,9 +1,20 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json , text
-from db.insert import insertUser , setEmail , removeUser , addPoll
+from db.insert import insertUser , setEmail  , addPoll
 from db.query import getToken , userExists , emailExists , getPolls
+from db.delete import removeUser , removePoll
 
 bp = Blueprint('view_user')
+
+
+
+@bp.route("/removepoll" , methods=["POST"])
+async def main(request):
+    """
+    deletes the poll request of user 
+    """
+    token = request.headers.get('token')
+    return removePoll(token , request.json)
 
 
 @bp.route("/getpolls" , methods=["POST"])

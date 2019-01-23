@@ -1,6 +1,7 @@
 from sanic import response
 from .functions import buildToken , makeConn , tokenIsValid
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 
 def getToken(json):
@@ -108,7 +109,9 @@ def getPolls(token):
     if token_result['status'] == 'OK':
         sql = "SELECT uuid , name , create_time FROM  polls where creator = %s order by create_time ;"
         conn = makeConn()
-        cur = conn.cursor()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+
+
         cur.execute(sql ,( token_result["user"], ))
         data = cur.fetchall()
         conn.close()
