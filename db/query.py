@@ -1,5 +1,5 @@
 from sanic import response
-from .functions import buildToken , makeConn
+from .functions import buildToken , makeConn , tokenIsValid
 import psycopg2
 
 
@@ -101,3 +101,22 @@ def emailExists(json):
         return response.json({'emailexists': True},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
+
+
+def getPolls(token):
+    token_result = tokenIsValid(token )
+    if token_result['status'] == 'OK':
+        sql = "SELECT uuid , name , create_time FROM  polls where creator = %s order by create_time ;"
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql ,( token_result["user"], ))
+        data = cur.fetchall()
+        conn.close()
+        return response.json(
+                {'message':'OK', 'data': data },
+                headers={'X-Served-By':'sanic'},
+                status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)

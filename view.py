@@ -1,14 +1,18 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json , text
 from db.insert import insertUser , setEmail , removeUser , addPoll
-from db.query import getToken , userExists , emailExists
+from db.query import getToken , userExists , emailExists , getPolls
 
 bp = Blueprint('view_user')
 
 
-@bp.route("/")
+@bp.route("/getpolls" , methods=["POST"])
 async def main(request):
-    return json({"hello":"main"})
+    """
+    returns all user polls
+    """
+    token = request.headers.get('token')
+    return getPolls(token)
 
 
 @bp.route("/adduser" , methods=["POST"])
