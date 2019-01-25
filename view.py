@@ -3,7 +3,7 @@ from sanic.response import json , text
 from db.insert import insertUser , setEmail  , addPoll
 from db.query import getToken , userExists , emailExists , getPolls
 from db.delete import removeUser , removePoll
-
+from db.edite import editePoll
 bp = Blueprint('view_user')
 
 
@@ -88,4 +88,13 @@ async def removeuser(request):
     """
     token = request.headers.get('token')
     return removeUser(token)
+
+
+@bp.route("/editepoll" , methods=["POST"])
+async def editepoll(request):
+    """
+   get uuid and poll information and update poll
+    """
+    token = request.headers.get('token')
+    return editePoll(token , request.json)
 
