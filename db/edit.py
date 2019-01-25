@@ -1,7 +1,7 @@
 from sanic import response
 from .functions import tokenIsValid , makeConn
 
-def editePoll(token, json) :
+def editPoll(token, json) :
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
         sql = "UPDATE polls SET name = %s , description = %s, place = %s,options = %s,last_edit = now() WHERE uuid = %s;"
