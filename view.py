@@ -1,15 +1,34 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json , text
-from db.insert import insertUser , setEmail  , addPoll
-from db.query import getToken , userExists , emailExists , getPolls
+from db.insert import insertUser , setEmail  , addPoll , doVote , editPoll
+from db.query import getToken , userExists , emailExists , getPolls , getPoll , getVote , getVotes
 from db.delete import removeUser , removePoll
-from db.edit import editPoll
 bp = Blueprint('view_user')
 
 
 
+@bp.route("/getvotes")
+async def getvotes(request):
+    token = request.headers.get('token')
+    return getVotes( token )
+
+
+@bp.route("/getvote")
+async def getvote( request ):
+    token = request.headers.get('token')
+    return getVote(token , request.json)
+
+
+@bp.route("/vote" , methods=["POST"])
+async def vote(request):
+    """
+    gets  poll_id , and list of choosen options.
+    """
+    token = request.headers.get('token')
+    return doVote(token , request.json)
+
 @bp.route("/removepoll" , methods=["POST"])
-async def main(request):
+async def removepoll(request):
     """
     deletes the poll request of user 
     """
@@ -17,8 +36,14 @@ async def main(request):
     return removePoll(token , request.json)
 
 
+@bp.route("/getpoll" , methods=["POST"] )
+async def getpoll(request):
+    token = request.headers.get('token')
+    return getPoll(token , request.json)
+
+
 @bp.route("/getpolls" , methods=["POST"])
-async def main(request):
+async def getpolls(request):
     """
     returns all user polls
     """

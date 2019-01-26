@@ -2,6 +2,7 @@ from sanic import response
 from .functions import buildToken , makeConn , tokenIsValid
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import json as js
 
 
 def getToken(json):
@@ -87,7 +88,7 @@ def emailExists(json):
         email2 = cur.fetchone()
         cur.close()
         conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
+    except (Exception, psycopg2.DatabaseError) as error: 
         print(error)
     finally:
         if conn is not None:
@@ -104,16 +105,87 @@ def emailExists(json):
                              status=200)
 
 
+def getPoll(token , json):
+    token_result = tokenIsValid(token)
+    if token_result['status'] == 'OK':
+        if 'poll_id' not in json:
+            return response.json({'message': 'poll_id  Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
+        sql = "SELECT * FROM polls WHERE uuid = %s ;"
+        conn = makeConn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(sql , [json["poll_id"] ,])
+        data = cur.fetchone()
+        conn.close()
+        data["options"] = js.loads( data["options"] )
+        return response.json(
+                {'message':'OK', 'data': data },
+                headers={'X-Served-By':'sanic'},
+                status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+
+
+
 def getPolls(token):
     token_result = tokenIsValid(token )
     if token_result['status'] == 'OK':
         sql = "SELECT uuid , name , create_time FROM  polls where creator = %s order by create_time ;"
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
-
-
         cur.execute(sql ,( token_result["user"], ))
         data = cur.fetchall()
+        conn.close()
+        return response.json(
+                {'message':'OK', 'data': data },
+                headers={'X-Served-By':'sanic'},
+                status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+
+
+def getVote( token , json ):
+    token_result = tokenIsValid(token)
+    if 'poll_id' not in json:
+        return response.json({'message': 'poll_id  Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
+    if token_result['status'] == 'OK':
+            sql = "SELECR uuid , username , poll , options FROM votes where username = % and poll = %"
+            conn = makeConn()
+            cur = conn.cursor(cursor_factory=RealDictCursor)
+            cur.execute(sql ,( token_result["user"], ))
+            data = cur.fetchone()
+            conn.close()
+            if data != None :
+                return response.json(
+                    {'message':'OK', 'data': data },
+                    headers={'X-Served-By':'sanic'},
+                    status=200)
+            else:
+                return response.json(
+                    {'message':'failure', 'data': None },
+                    headers={'X-Served-By':'sanic'},
+                    status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                    headers={'X-Served-By': 'sanic'},
+                    status=401)
+
+
+def getVotes(token):
+    token_result = tokenIsValid(token)
+    if token_result['status'] == 'OK':
+        sql = "SELECT * FROM votes WHERE username = %s ;"
+        conn = makeConn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(sql ,( token_result["user"], ))
+        data = cur.fetchone()
         conn.close()
         return response.json(
                 {'message':'OK', 'data': data },
