@@ -7,13 +7,13 @@ bp = Blueprint('view_user')
 
 
 
-@bp.route("/getvotes")
+@bp.route("/getvotes" , methods=["POST"])
 async def getvotes(request):
     token = request.headers.get('token')
     return getVotes( token )
 
 
-@bp.route("/getvote")
+@bp.route("/getvote" , methods=["POST"])
 async def getvote( request ):
     token = request.headers.get('token')
     return getVote(token , request.json)

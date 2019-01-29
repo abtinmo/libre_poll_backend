@@ -134,21 +134,37 @@ def doVote( token , json ):
             return response.json({'message': 'Poll_id or Options are  Empty'},
                                  headers={'X-Served-By': 'sanic'},
                                  status=401)
-        if getVote(token , json )['message'] == 'OK':
-            return response.json({'message': 'You did vote befor , please Delete the old one'},
-                                 headers={'X-Served-By': 'sanic'},
-                                 status=401)
         user_options = json['options']
         poll_id = json['poll_id']
         #db part
-        sql = "select options from polls where poll_is = %s;"
-        sql1 = "update polls , SET options = %s where uuid = %s ;"
+        sql = "select options from polls where uuid = %s;"
+        sql0 = "select count(*) from votes where username = %s and poll = %s;" 
+        sql1 = "update polls SET options = %s where uuid = %s ;"
         sql2 = "insert into votes(uuid , username , poll , options) values(%s ,%s ,%s ,%s );"
         conn = None
         try:
             conn = makeConn()
             cur = conn.cursor()
-            cur.execute(sql, poll_id )
+            cur.execute(sql0 ,[ token_result["user"], poll_id ]  )
+            vote_exists = cur.fetchone()
+            cur.close()
+            result = True
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            result = False
+        finally:
+            if conn is not None:
+                conn.close()
+        print (vote_exists )
+        if vote_exists[0] > 0 :
+            return response.json({'message': 'user voted befor'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+            
+        try:
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.execute(sql, (poll_id ,) )
             options = cur.fetchone()
             cur.close()
             result = True
@@ -159,7 +175,8 @@ def doVote( token , json ):
             if conn is not None:
                 conn.close()
         print("\n\noptions befor add\n\n" , options , "\n\n"  , user_options)
-        options = js.loads( options )
+        options = js.loads( options[0] )
+        print(options)
         try:
             for key in user_options:
                 options[key] += 1
@@ -174,7 +191,7 @@ def doVote( token , json ):
             conn = makeConn()
             cur = conn.cursor()
             cur.execute(sql1, params )
-            options = cur.fetchone()
+            conn.commit()
             cur.close()
             result = True
         except (Exception, psycopg2.DatabaseError) as error:
@@ -183,13 +200,13 @@ def doVote( token , json ):
         finally:
             if conn is not None:
                 conn.close()
-        print("\n\noptions befor add\n\n" , options , "\n\n"  , user_options)
         params = [ str(uuid.uuid4()) , token_result['user'] , poll_id , user_options]
+        print(params)
         try:
             conn = makeConn()
             cur = conn.cursor()
             cur.execute( sql2, params )
-            options = cur.fetchone()
+            conn.commit()
             cur.close()
             result = True
         except (Exception, psycopg2.DatabaseError) as error:
@@ -198,7 +215,6 @@ def doVote( token , json ):
         finally:
             if conn is not None:
                 conn.close()
-        print("\n\noptions befor add\n\n" , options , "\n\n"  , user_options)
         return response.json(
                 {'message': 'OK!'},
                 headers={'X-Served-By': 'sanic'},

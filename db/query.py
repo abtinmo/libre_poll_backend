@@ -156,10 +156,12 @@ def getVote( token , json ):
                              headers={'X-Served-By': 'sanic'},
                              status=401)
     if token_result['status'] == 'OK':
-            sql = "SELECR uuid , username , poll , options FROM votes where username = % and poll = %"
+            sql = "SELECT uuid , username , poll , options FROM votes where username = %s and poll = %s"
+            params = [ token_result["user"]  ,  json["poll_id"]  ]
+            print(params)
             conn = makeConn()
             cur = conn.cursor(cursor_factory=RealDictCursor)
-            cur.execute(sql ,( token_result["user"], ))
+            cur.execute(sql , params )
             data = cur.fetchone()
             conn.close()
             if data != None :
@@ -185,7 +187,7 @@ def getVotes(token):
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(sql ,( token_result["user"], ))
-        data = cur.fetchone()
+        data = cur.fetchall()
         conn.close()
         return response.json(
                 {'message':'OK', 'data': data },
