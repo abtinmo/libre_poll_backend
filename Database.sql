@@ -8,7 +8,7 @@ CREATE TABLE users (
 
 CREATE TABLE polls(
  creator VARCHAR(100) REFERENCES  users(username) ON DELETE CASCADE ,
- uuid UUID PRIMARY KEY , 
+ poll_id VARCHAR(25) PRIMARY KEY , 
  name VARCHAR(300) NOT NULL , 
  description TEXT , 
  place VARCHAR(500) ,
@@ -18,7 +18,7 @@ CREATE TABLE polls(
 
 
 CREATE TABLE votes(
- uuid UUID PRIMARY KEY ,
+ vote_id VARCHAR(25) PRIMARY KEY ,
  username  VARCHAR(100) REFERENCES users(username) ON DELETE CASCADE ,
- poll UUID REFERENCES polls(uuid) ON DELETE CASCADE ,
- options TEXT );
+ poll varchar(25) REFERENCES polls(poll_id) ON DELETE CASCADE ,
+ options VARCHAR(500)[100] );

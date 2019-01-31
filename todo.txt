@@ -1,4 +1,2 @@
-view/user/removevote 
-view/user/editvote
 validate email
 

@@ -76,7 +76,7 @@ def setEmail(token , email):
 def addPoll(token , json):
     result = tokenIsValid(token)
     if 'user' in result :
-        sql = "INSERT INTO polls(name ,description ,place ,options ,creator,uuid)  VALUES(%s , %s , %s, %s, %s , %s);"
+        sql = "INSERT INTO polls(name ,description ,place ,options ,creator,poll_id)  VALUES(%s , %s , %s, %s, %s , %s);"
         if 'name' not in json:
             return response.json({'message': 'Name Empty'},
                                  headers={'X-Served-By': 'sanic'},
@@ -89,7 +89,7 @@ def addPoll(token , json):
             json['plcae'] = None
         if 'description' not in json:
             json['description'] = None
-        Uuid = str(uuid.uuid4())
+        Uuid = "Poll" + uuid.uuid4().hex[:15]
         conn = None
         opts = js.dumps({k: 0 for k in json['options'] } )
         params = [ json['name'] , json['description'] , json['place'] , opts ,
@@ -137,10 +137,10 @@ def doVote( token , json ):
         user_options = json['options']
         poll_id = json['poll_id']
         #db part
-        sql = "select options from polls where uuid = %s;"
+        sql = "select options from polls where poll_id = %s;"
         sql0 = "select count(*) from votes where username = %s and poll = %s;" 
-        sql1 = "update polls SET options = %s where uuid = %s ;"
-        sql2 = "insert into votes(uuid , username , poll , options) values(%s ,%s ,%s ,%s );"
+        sql1 = "update polls SET options = %s where poll_id = %s ;"
+        sql2 = "insert into votes(vote_id , username , poll , options) values(%s ,%s ,%s ,%s );"
         conn = None
         try:
             conn = makeConn()
@@ -200,7 +200,7 @@ def doVote( token , json ):
         finally:
             if conn is not None:
                 conn.close()
-        params = [ str(uuid.uuid4()) , token_result['user'] , poll_id , user_options]
+        params = [ "Vote" + uuid.uuid4().hex[:15] , token_result['user'] , poll_id , user_options]
         print(params)
         try:
             conn = makeConn()
@@ -228,7 +228,7 @@ def doVote( token , json ):
 def editPoll(token, json) :
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
-        sql = "UPDATE polls SET name = %s , description = %s, place = %s,options = %s,last_edit = now() WHERE uuid = %s AND creator = %s  ;"
+        sql = "UPDATE polls SET name = %s , description = %s, place = %s,options = %s,last_edit = now() WHERE poll_id = %s AND creator = %s  ;"
         if 'name' not in json:
             return response.json({'message': 'Name Empty'},
                                  headers={'X-Served-By': 'sanic'},
@@ -237,7 +237,7 @@ def editPoll(token, json) :
             return response.json({'message': 'Options Empty'},
                                  headers={'X-Served-By': 'sanic'},
                                  status=401)
-        if 'uuid' not in json:
+        if 'poll_id' not in json:
             return response.json({'message': 'UUID Empty'},
                                  headers={'X-Served-By': 'sanic'},
                                  status=401)
@@ -246,10 +246,10 @@ def editPoll(token, json) :
         if 'description' not in json:
             json['description'] = None
         opts = js.dumps({k: 0 for k in json['options'] } )
-        params = [json['name'], json['description'], json['place'], opts, json['uuid'] , token_result['user'] ] 
+        params = [json['name'], json['description'], json['place'], opts, json['poll_id'] , token_result['user'] ] 
         conn = makeConn()
         cur = conn.cursor()
-        cur.execute(sql, params,)
+        cur.execute(sql, params)
         conn.commit()
         conn.close()
         return response.json(

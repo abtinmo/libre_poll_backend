@@ -112,7 +112,7 @@ def getPoll(token , json):
             return response.json({'message': 'poll_id  Empty'},
                              headers={'X-Served-By': 'sanic'},
                              status=401)
-        sql = "SELECT * FROM polls WHERE uuid = %s ;"
+        sql = "SELECT * FROM polls WHERE poll_id = %s ;"
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(sql , [json["poll_id"] ,])
@@ -133,7 +133,7 @@ def getPoll(token , json):
 def getPolls(token):
     token_result = tokenIsValid(token )
     if token_result['status'] == 'OK':
-        sql = "SELECT uuid , name , create_time FROM  polls where creator = %s order by create_time ;"
+        sql = "SELECT poll_id , name , create_time FROM  polls where creator = %s order by create_time ;"
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(sql ,( token_result["user"], ))
@@ -156,7 +156,7 @@ def getVote( token , json ):
                              headers={'X-Served-By': 'sanic'},
                              status=401)
     if token_result['status'] == 'OK':
-            sql = "SELECT uuid , username , poll , options FROM votes where username = %s and poll = %s"
+            sql = "SELECT vote_id , username , poll , options FROM votes where username = %s and poll = %s"
             params = [ token_result["user"]  ,  json["poll_id"]  ]
             print(params)
             conn = makeConn()
