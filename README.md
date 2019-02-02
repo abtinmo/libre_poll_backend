@@ -42,14 +42,36 @@
 * [Contributing](#contributing)
 
 ## Key Features
-TODO
+sanic 
+postgresql 
 
 ## Stack
 * item No.1
 * item No.2
 
 ## Setup
-TODO
+install requirements with pip
+```
+pip install requirements.txt
+```
+you need to install postgresql , if not familiar follow this :
+
+[postgresql ubuntu 18.4](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+
+edit db/config.py and update secret_key and database config.
+```
+secrect_key = "YOUR_KEY"
+db_config = 'user=YOUR_USER  password=YOUR_PASSWORD host=TOUR_HOST dbname=YOUR_DATABASE_NAME'
+```
+
+next run this command to create tables in database
+```
+ psql YOUR_DATABSE_NAME < Database.sql
+```
+finally
+```
+python3 server.py
+```
 
 ## Contributing
 Pull requests are welcome. You'll probably find lots of improvements to be made.
