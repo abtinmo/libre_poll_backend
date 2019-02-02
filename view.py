@@ -104,7 +104,7 @@ async def setemail(request):
 @bp.route("/addpoll" , methods=["POST"])
 async def addpoll(request):
     """
-    get token and poll information and add poll tp database
+    get token and poll information and add poll to database
     """
     token = request.headers.get('token')
     json = request.json
