@@ -42,8 +42,8 @@
 * [Contributing](#contributing)
 
 ## Key Features
-sanic 
-postgresql 
+sanic
+postgresql
 
 ## Stack
 * item No.1
@@ -52,7 +52,7 @@ postgresql
 ## Setup
 install requirements with pip
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 you need to install postgresql , if not familiar follow this :
 
