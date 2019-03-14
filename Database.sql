@@ -1,6 +1,6 @@
 CREATE TABLE users (
  user_id VARCHAR(25) PRIMARY KEY ,
- username VARCHAR(100) NOT NULL UNIQUE , 
+ username VARCHAR(100) NOT NULL UNIQUE ,
  password VARCHAR(200) NOT NULL ,
  email VARCHAR(200) UNIQUE ,
  createtime TIMESTAMP DEFAULT NOW() ) ;
@@ -8,9 +8,9 @@ CREATE TABLE users (
 
 CREATE TABLE polls(
  creator VARCHAR(100) REFERENCES  users(username) ON DELETE CASCADE ,
- poll_id VARCHAR(25) PRIMARY KEY , 
- name VARCHAR(300) NOT NULL , 
- description TEXT , 
+ poll_id VARCHAR(25) PRIMARY KEY ,
+ name VARCHAR(300) NOT NULL ,
+ description TEXT ,
  place VARCHAR(500) ,
  options TEXT NOT NULL ,
  create_time TIMESTAMP DEFAULT NOW() ,
