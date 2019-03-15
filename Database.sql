@@ -1,5 +1,6 @@
 CREATE TABLE users (
  user_id VARCHAR(25) PRIMARY KEY ,
+ can_add INTEGER DEFAULT 0 ,
  username VARCHAR(100) NOT NULL UNIQUE ,
  password VARCHAR(200) NOT NULL ,
  email VARCHAR(200) UNIQUE ,
@@ -7,8 +8,9 @@ CREATE TABLE users (
 
 
 CREATE TABLE polls(
- creator VARCHAR(100) REFERENCES  users(username) ON DELETE CASCADE ,
+ creator VARCHAR(100) REFERENCES  users(user_id) ON DELETE CASCADE ,
  poll_id VARCHAR(25) PRIMARY KEY ,
+ type INTEGER  default 1 ,
  name VARCHAR(300) NOT NULL ,
  description TEXT ,
  place VARCHAR(500) ,
@@ -19,6 +21,20 @@ CREATE TABLE polls(
 
 CREATE TABLE votes(
  vote_id VARCHAR(25) PRIMARY KEY ,
- username  VARCHAR(100) REFERENCES users(username) ON DELETE CASCADE ,
+ username  VARCHAR(100) REFERENCES users(user_id) ON DELETE CASCADE ,
  poll varchar(25) REFERENCES polls(poll_id) ON DELETE CASCADE ,
  options VARCHAR(500)[100] );
+
+CREATE TABLE gp(
+ gp_id VARCHAR(25) PRIMARY KEY,
+ creator VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE ,
+ name VARCHAR(200) );
+
+CREATE TABLE gp_users(
+ user_id VARCHAR(25) ,
+ pg_id VARCHAR(25) );
+
+CREATE TABLE user_poll_access(
+ user_id VARCHAR(25) REFERENCES users(user_id) ,
+ poll_id VARCHAR(25) REFERENCES polls(poll_id) );
+
