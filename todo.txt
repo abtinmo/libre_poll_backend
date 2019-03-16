@@ -1,4 +1,12 @@
 validate email
-function create group
+function create group #abtin
+function remove group
+change user can_add to 1 or 0
 function add user to group if user.can_add is 1
 function remove user from group
+make user_poll_access relation , for give access to user
+remove user_poll_access , for remove access of user
+make user_poll_access realation for all users of group
+remove user_poll_access relation for all users of group
+get all users with access to poll
+change vote and editvote to check access
