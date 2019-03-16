@@ -262,3 +262,36 @@ def editPoll(token, json):
         return response.json({'message': 'Failure, Token invalid '},
                              headers={'X-Served-By': 'sanic'},
                              status=401)
+
+
+def addGroup(token, json):
+    token_result = tokenIsValid(token)
+    sql = '''INSERT INTO gp(gp_id, creator, name ) VALUES (%s, %s, %s)'''
+    if token_result['status'] == 'OK':
+        if 'name' not in json:
+            return response.json({'message': 'Name Empty'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        gp_id = "Group" + uuid.uuid4().hex[:15]
+        params = [gp_id, token_result["user"], json["name"]]
+        try:
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.execute(sql, params)
+            conn.commit()
+            cur.close()
+            result = "OK"
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            result = error
+        finally:
+            if conn is not None:
+                conn.close()
+        return response.json(
+            {'message': result },
+            headers={'X-Served-By': 'sanic'},
+            status=200)
+    else:
+        return response.json({'message': 'Failure , Token invalid'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
