@@ -1,5 +1,6 @@
 validate email
-function remove group #abtin
+get all groups
+get one group
 change user can_add to 1 or 0
 function add user to group if user.can_add is 1
 function remove user from group

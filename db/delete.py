@@ -4,9 +4,33 @@ import psycopg2
 import json as js
 
 
+def removeGroup(token, json):
+    if 'gp_id' not in json:
+        return response.json({'message': 'gp_id Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=406)
+    token_result = tokenIsValid(token)
+    if token_result['status'] == 'OK':
+        sql = "DELETE FROM gp where creator = %s  and gp_id = %s;"
+        params = [token_result['user'], json['gp_id']]
+        conn = makeConn()
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        conn.commit()
+        conn.close()
+        return response.json(
+            {'message': 'OK'},
+            headers={'X-Served-By': 'sanic'},
+            status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
+
+
 def removePoll(token, json):
     if 'poll_id' not in json:
-        return response.json({'message': 'UUID Empty'},
+        return response.json({'message': 'poll_id Empty'},
                              headers={'X-Served-By': 'sanic'},
                              status=406)
     token_result = tokenIsValid(token)
