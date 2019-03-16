@@ -61,7 +61,7 @@ you need to install postgresql , if not familiar follow this :
 edit db/config.py and update secret_key and database config.
 ```
 secrect_key = "YOUR_KEY"
-db_config = 'user=YOUR_USER  password=YOUR_PASSWORD host=TOUR_HOST dbname=YOUR_DATABASE_NAME'
+db_config = 'user=YOUR_USER  password=YOUR_PASSWORD host=YOUR_HOST dbname=YOUR_DATABASE_NAME'
 ```
 
 next run this command to create tables in database
