@@ -1,6 +1,6 @@
 validate email
-function get username by user_id
-function get user_id by username 
+function get username by user_id #abtin
+function get user_id by username #abtin
 function create group
 function add user to group if user.can_add is 1
 function remove user from group
