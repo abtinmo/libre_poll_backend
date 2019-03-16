@@ -89,11 +89,11 @@ def addPoll(token, json):
             json['plcae'] = None
         if 'description' not in json:
             json['description'] = None
-        Uuid = "Poll" + uuid.uuid4().hex[:15]
+        poll_id = "Poll" + uuid.uuid4().hex[:15]
         conn = None
         opts = js.dumps({k: 0 for k in json['options']})
         params = [json['name'], json['description'], json['place'], opts,
-                  result['user'], Uuid]
+                  result['user'], poll_id]
         try:
             conn = makeConn()
             cur = conn.cursor()
@@ -138,9 +138,9 @@ def doVote(token, json):
         poll_id = json['poll_id']
         # db part
         sql = "select options from polls where poll_id = %s;"
-        sql0 = "select count(*) from votes where username = %s and poll = %s;"
+        sql0 = "select count(*) from votes where user_id = %s and poll = %s;"
         sql1 = "update polls SET options = %s where poll_id = %s ;"
-        sql2 = "insert into votes(vote_id , username , poll , options) values(%s ,%s ,%s ,%s );"
+        sql2 = "insert into votes(vote_id , user_id , poll , options) values(%s ,%s ,%s ,%s );"
         conn = None
         try:
             conn = makeConn()

@@ -21,7 +21,7 @@ CREATE TABLE polls(
 
 CREATE TABLE votes(
  vote_id VARCHAR(25) PRIMARY KEY ,
- username  VARCHAR(100) REFERENCES users(user_id) ON DELETE CASCADE ,
+ user_id  VARCHAR(100) REFERENCES users(user_id) ON DELETE CASCADE ,
  poll varchar(25) REFERENCES polls(poll_id) ON DELETE CASCADE ,
  options VARCHAR(500)[100] );
 
@@ -35,6 +35,6 @@ CREATE TABLE gp_users(
  pg_id VARCHAR(25) );
 
 CREATE TABLE user_poll_access(
- user_id VARCHAR(25) REFERENCES users(user_id) ,
- poll_id VARCHAR(25) REFERENCES polls(poll_id) );
+ user_id VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE ,
+ poll_id VARCHAR(25) REFERENCES polls(poll_id) ON DELETE CASCADE );
 

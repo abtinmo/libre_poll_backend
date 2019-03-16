@@ -24,7 +24,7 @@ def getToken(json):
         conn = makeConn()
         cur = conn.cursor()
         cur.execute(sql, (username, password))
-        userid = cur.fetchone()
+        userid = cur.fetchone()[0]
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -34,7 +34,7 @@ def getToken(json):
             conn.close()
     print(userid)
     if(userid):
-        return response.json({"message": "OK", "token": buildToken(username)},
+        return response.json({"message": "OK", "token": buildToken(userid)},
                              headers={'X-Served-By': 'sanic'},
                              status=200)
     else:
@@ -157,7 +157,7 @@ def getVote(token, json):
                              headers={'X-Served-By': 'sanic'},
                              status=401)
     if token_result['status'] == 'OK':
-        sql = "SELECT vote_id , username , poll , options FROM votes where username = %s and poll = %s"
+        sql = "SELECT vote_id , user_id , poll , options FROM votes where user_id = %s and poll = %s"
         params = [token_result["user"],  json["poll_id"]]
         print(params)
         conn = makeConn()
@@ -184,7 +184,7 @@ def getVote(token, json):
 def getVotes(token):
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
-        sql = "SELECT * FROM votes WHERE username = %s ;"
+        sql = "SELECT * FROM votes WHERE user_id = %s ;"
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(sql, (token_result["user"], ))

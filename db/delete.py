@@ -5,14 +5,14 @@ import json as js
 
 
 def removePoll(token, json):
-    if 'uuid' not in json:
+    if 'poll_id' not in json:
         return response.json({'message': 'UUID Empty'},
                              headers={'X-Served-By': 'sanic'},
                              status=406)
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
-        sql = "DELETE FROM polls where creator = %s  and uuid = %s;"
-        params = [token_result['user'], json['uuid']]
+        sql = "DELETE FROM polls where creator = %s  and poll_id = %s;"
+        params = [token_result['user'], json['poll_id']]
         conn = makeConn()
         cur = conn.cursor()
         cur.execute(sql, params)
@@ -32,7 +32,7 @@ def removePoll(token, json):
 def removeUser(token):
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
-        sql = "DELETE FROM users where username = %s ;"
+        sql = "DELETE FROM users where user_id = %s ;"
         conn = makeConn()
         cur = conn.cursor()
         cur.execute(sql, (token_result["user"], ))
@@ -60,10 +60,10 @@ def removeVote(token, json):
         poll_id = json['poll_id']
         # db part
         sql = "select options from polls where poll_id = %s;"
-        sql0 = "select count(*) from votes where username = %s and poll = %s;"
-        sql11 = "select options from votes where username = %s and poll = %s ;"
+        sql0 = "select count(*) from votes where user_id = %s and poll = %s;"
+        sql11 = "select options from votes where user_id = %s and poll = %s ;"
         sql1 = "update polls SET options = %s where poll_id = %s ;"
-        sql2 = "  DELETE FROM votes WHERE username = %s  AND poll = %s ; "
+        sql2 = "  DELETE FROM votes WHERE user_id = %s  AND poll = %s ; "
         conn = None
 
         try:

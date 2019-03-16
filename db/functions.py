@@ -7,11 +7,11 @@ def makeConn():
     return psycopg2.connect(db_config)
 
 
-def buildToken(username):
+def buildToken(user_id):
     """
     get a username and builds token for the user
     """
-    return jwt.encode({'sub': username}, secrect_key, algorithm='HS256').decode('utf-8')
+    return jwt.encode({'sub': user_id}, secrect_key, algorithm='HS256').decode('utf-8')
 
 
 def tokenIsValid(token):

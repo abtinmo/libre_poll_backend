@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "47b36fd3-e25a-4dc7-b45a-e1739d769a59",
+		"name": "librepoll",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "adduser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"testuser\",\n\t\"password\":\"testpassword\",\n\t\"email\":\"testuser@example.net\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/adduser",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"adduser"
+					]
+				},
+				"description": "gets username , password and email(optionl)"
+			},
+			"response": []
+		},
+		{
+			"name": "gettoken",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"testuser\",\n\t\"password\":\"testpassword\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/gettoken",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"gettoken"
+					]
+				},
+				"description": "gets username and password , returns token without expire time"
+			},
+			"response": []
+		},
+		{
+			"name": "removeuser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyZTk5Nzg5ZGJkM2U4NDVhIn0.ZdwW-9PfSS1PMoM56oo6cGKdk2fYnE6ekhYl25z5cLI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/removeuser",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"removeuser"
+					]
+				},
+				"description": "with token"
+			},
+			"response": []
+		},
+		{
+			"name": "emailexists",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"abtin@riseup.net\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/emailexists",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"emailexists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userexists",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"abtin\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/userexists",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"userexists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addpoll",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"test poll\",\n\t\"options\":[\"serie aval\", \"soale dovom\" , \"gozineie sevom\"],\n\t\"place\":\"tehran pars\",\n\t\"description\":\"the first lug with new system0\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/addpoll",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"addpoll"
+					]
+				},
+				"description": "place and description are optional"
+			},
+			"response": []
+		},
+		{
+			"name": "get polls",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getpolls",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getpolls"
+					]
+				},
+				"description": "all polls created by user"
+			},
+			"response": []
+		},
+		{
+			"name": "editpoll",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\": \"Pollf109d8c0c8f148c\",\n\t\"name\":\"test poll\",\n\t\"options\":[\"serie aval\", \"soale dovom\" , \"gozineie sevom\"],\n\t\"place\":\"tehran pars\"\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/editpoll",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"editpoll"
+					]
+				},
+				"description": "description and place are optional"
+			},
+			"response": []
+		},
+		{
+			"name": "get poll",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\": \"Pollf109d8c0c8f148c\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getpoll",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getpoll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove poll",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\": \"Pollf109d8c0c8f148c\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/removepoll",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"removepoll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\": \"Pollbeddbf2e95d744d\",\n\t\"options\": [\"gozineie sevom\"]\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/vote",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"vote"
+					]
+				},
+				"description": "list of options and poll_id"
+			},
+			"response": []
+		},
+		{
+			"name": "get votes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getvotes",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getvotes"
+					]
+				},
+				"description": "get user all votes"
+			},
+			"response": []
+		},
+		{
+			"name": "remove vote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\":\"Pollbeddbf2e95d744d\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/removevote",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"removevote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get vote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"poll_id\":\"Pollbeddbf2e95d744d\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getvote",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getvote"
+					]
+				},
+				"description": "get one vote "
+			},
+			"response": []
+		}
+	]
+}
