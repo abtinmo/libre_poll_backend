@@ -1,9 +1,19 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json, text
 from db.insert import insertUser, setEmail, addPoll, doVote, editPoll
-from db.query import getToken, userExists, emailExists, getPolls, getPoll, getVote, getVotes
+from db.query import getToken, userExists, emailExists, getPolls, getPoll, getVote, getVotes, userIDToUsername, usernameToUserID
 from db.delete import removeUser, removePoll, removeVote
 bp = Blueprint('view_user')
+
+
+@bp.route("/getuserid", methods=["POST"])
+async def getuserid(request):
+    print("got the req")
+    return usernameToUserID(request.json)
+
+@bp.route("/getusername", methods=["POST"])
+async def getusername(request):
+    return userIDToUsername(request.json)
 
 
 @bp.route("/removevote", methods=["POST"])
