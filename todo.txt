@@ -1,6 +1,6 @@
 validate email
-get all groups
-get one group
+get all groups #alirezahs
+get one group #alirezahs
 change user can_add to 1 or 0
 function add user to group if user.can_add is 1
 function remove user from group
