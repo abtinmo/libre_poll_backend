@@ -5,6 +5,23 @@ from psycopg2.extras import RealDictCursor
 import json as js
 
 
+def getAllgroup(json):
+    sql = '''SELECT name FROM gp WHERE creator = %s;'''
+    if 'user_id' not in json:
+        return response.json({'message': 'user_id is  Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
+    conn = None
+    conn = makeConn()
+    cur = conn.cursor()
+    cur.execute(sql, [json["user_id"], ])
+    user_id = cur.fetchone()[0]
+    cur.close()
+    return response.json({"message": "OK", "user_id": user_id},
+                         headers={'X-Served-By': 'sanic'},
+                         status=200)
+
+
 def userIDToUsername(json):
     sql = '''SELECT username FROM users WHERE user_id = %s;'''
     if 'user_id' not in json:
