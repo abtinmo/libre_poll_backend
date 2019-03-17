@@ -4,7 +4,45 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import json as js
 
-
+def getGroupmembers(token, json):
+    """
+    get token and gp_id then return all group members
+    """
+    token_result = tokenIsValid(token)
+    if token_result['status'] == 'OK':
+        if 'gp_id' not in json:
+            return response.json({'message': 'gp_id is  Empty'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        sql2 = "SELECT creator FROM gp WHERE gp_id = %s;"
+        conn = None
+        conn = makeConn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(sql2, (json["gp_id"],))
+        creator = cur.fetchone()
+        if creator["creator"] != token_result["user"]:
+            return response.json({'message': 'Failure, You dont have acsess to this group'},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=401)
+        else:
+            sql = "SELECT user_id FROM gp_users WHERE gp_id = %s;"
+            conn = None
+            conn = makeConn()
+            cur = conn.cursor(cursor_factory=RealDictCursor)
+            cur.execute(sql, (token_result["user"],))
+            row = cur.fetchone()
+            data = []
+            while row is not None:
+                data.append(row)
+                row = cur.fetchone()
+            cur.close()
+            return response.json({"message": "OK", 'users': data},
+                                 headers={'X-Served-By': 'sanic'},
+                                 status=200)
+    else:
+        return response.json({'message': 'Failure, Token invalid '},
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
 def getAllgroup(token):
     """
     get token and return all groups for user
