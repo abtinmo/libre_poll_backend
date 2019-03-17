@@ -11,7 +11,7 @@ def getAllgroup(token):
     """
     token_result = tokenIsValid(token)
     if token_result['status'] == 'OK':
-        sql = "SELECT name FROM gp WHERE creator = %s;"
+        sql = "SELECT name , gp_id FROM gp WHERE creator = %s;"
         conn = None
         conn = makeConn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
