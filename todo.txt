@@ -1,5 +1,5 @@
 validate email
-Get gp_id and return list of users in group
+Get gp_id and return list of users in group #alirezahs #done
 change user can_add to 1 or 0
 function add user to group if user.can_add is 1
 function remove user from group
