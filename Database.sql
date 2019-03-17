@@ -38,3 +38,16 @@ CREATE TABLE user_poll_access(
  user_id VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE ,
  poll_id VARCHAR(25) REFERENCES polls(poll_id) ON DELETE CASCADE );
 
+
+CREATE OR REPLACE FUNCTION ChangeCanAdd( inputUserID varchar(25) )
+ RETURNS INTEGER AS $$
+ BEGIN
+ IF (SELECT can_add FROM users WHERE user_id = inputUserID) > 0 THEN
+ 	UPDATE users SET can_add = 0 WHERE user_id = inputUserID ;
+ ELSE
+        UPDATE users SET can_add = 1 WHERE user_id = inputUserID ;
+ END IF;
+ RETURN 0;
+ END;
+$$ LANGUAGE plpgsql;
+

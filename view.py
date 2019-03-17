@@ -1,9 +1,16 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json, text
-from db.insert import insertUser, setEmail, addPoll, doVote, editPoll, addGroup
+from db.insert import insertUser, setEmail, addPoll, doVote, editPoll, addGroup, changeCanAdd
 from db.query import getToken, userExists, emailExists, getPolls, getPoll, getVote, getVotes, userIDToUsername, usernameToUserID, getAllgroup, getGroupmembers
 from db.delete import removeUser, removePoll, removeVote, removeGroup
 bp = Blueprint('view_user')
+
+
+@bp.route("/changecanadd", methods=["POST"])
+async def changecanadd(request):
+    print("inside the fun")
+    token = request.headers.get("token")
+    return changeCanAdd(token)
 
 
 @bp.route("/removegroup", methods=["POST"])

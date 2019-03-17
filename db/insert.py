@@ -6,6 +6,32 @@ import uuid
 import json as js
 
 
+def changeCanAdd(token):
+    token_result = tokenIsValid(token)
+    print(token)
+    conn = None
+    if token_result['status'] == 'OK':
+        print("token is valid")
+        try:
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.callproc('ChangeCanAdd',[token_result["user"], ])
+            conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        finally:
+            if conn is not None:
+                conn.close()
+        return response.json(
+            {'message': 'OK!'},
+            headers={'X-Served-By': 'sanic'},
+            status=200)
+    else:
+        return response.json({'message': 'Token invalid'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=500)
+    
+
 def insertUser(json):
     sql = "INSERT INTO users( user_id , username , password , email)  VALUES(%s ,%s, %s , %s);"
     try:
