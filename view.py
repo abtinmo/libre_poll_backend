@@ -21,9 +21,10 @@ async def addgroup(request):
 @bp.route("/getallgroup", methods=["POST"])
 async def getallgroup(request):
     """
-    get user_id and return all groups for user
+    get token and return all groups for user
     """
-    return getAllgroup(request.json)
+    token = request.headers.get('token')
+    return getAllgroup(token)
 
 
 @bp.route("/getuserid", methods=["POST"])
