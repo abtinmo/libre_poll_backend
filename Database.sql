@@ -32,7 +32,7 @@ CREATE TABLE gp(
 
 CREATE TABLE gp_users(
  user_id VARCHAR(25) ,
- pg_id VARCHAR(25) );
+ gp_id VARCHAR(25) );
 
 CREATE TABLE user_poll_access(
  user_id VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE ,
