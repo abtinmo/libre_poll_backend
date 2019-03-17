@@ -9,35 +9,35 @@ def userIDToUsername(json):
     sql = '''SELECT username FROM users WHERE user_id = %s;'''
     if 'user_id' not in json:
         return response.json({'message': 'user_id is  Empty'},
-                                headers={'X-Served-By': 'sanic'},
-                                status=401)
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
     conn = None
     conn = makeConn()
     cur = conn.cursor()
-    cur.execute(sql,[json["user_id"], ])
+    cur.execute(sql, [json["user_id"], ])
     user_id = cur.fetchone()[0]
     cur.close()
     return response.json({"message": "OK", "user_id": user_id},
-                             headers={'X-Served-By': 'sanic'},
-                             status=200)
+                         headers={'X-Served-By': 'sanic'},
+                         status=200)
 
 
 def usernameToUserID(json):
     sql = '''SELECT user_id FROM users WHERE username = %s;'''
     if 'username' not in json:
         return response.json({'message': 'user_id is  Empty'},
-                                headers={'X-Served-By': 'sanic'},
-                                status=401)
+                             headers={'X-Served-By': 'sanic'},
+                             status=401)
     conn = None
     conn = makeConn()
     cur = conn.cursor()
-    cur.execute(sql,[json["username"], ])
+    cur.execute(sql, [json["username"], ])
     username = cur.fetchone()[0]
     cur.close()
     return response.json({"message": "OK", "username": username},
-                             headers={'X-Served-By': 'sanic'},
-                             status=200)
-    
+                         headers={'X-Served-By': 'sanic'},
+                         status=200)
+
 
 def getToken(json):
     sql = '''SELECT user_id FROM users WHERE username = %s and password = %s'''

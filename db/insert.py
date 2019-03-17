@@ -288,7 +288,7 @@ def addGroup(token, json):
             if conn is not None:
                 conn.close()
         return response.json(
-            {'message': result },
+            {'message': result},
             headers={'X-Served-By': 'sanic'},
             status=200)
     else:
