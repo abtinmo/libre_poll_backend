@@ -29,8 +29,8 @@ def getGroupmembers(token, json):
             conn = None
             conn = makeConn()
             cur = conn.cursor(cursor_factory=RealDictCursor)
-            cur.execute(sql, (token_result["user"],))
-            row = cur.fetchone()
+            cur.execute(sql, (json["gp_id"],))
+            row = cur.fetchall()
             data = []
             while row is not None:
                 data.append(row)

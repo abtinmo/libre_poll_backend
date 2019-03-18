@@ -31,8 +31,8 @@ CREATE TABLE gp(
  name VARCHAR(200) );
 
 CREATE TABLE gp_users(
- user_id VARCHAR(25) ,
- gp_id VARCHAR(25) );
+ user_id VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE,
+ gp_id VARCHAR(25) REFERENCES gp(gp_id) ON DELETE CASCADE );
 
 CREATE TABLE user_poll_access(
  user_id VARCHAR(25) REFERENCES users(user_id) ON DELETE CASCADE ,
@@ -42,12 +42,25 @@ CREATE TABLE user_poll_access(
 CREATE OR REPLACE FUNCTION ChangeCanAdd( inputUserID varchar(25) )
  RETURNS INTEGER AS $$
  BEGIN
- IF (SELECT can_add FROM users WHERE user_id = inputUserID) > 0 THEN
+ IF (SELECT can_add FROM users WHERE users.user_id = inputUserID) > 0 THEN
  	UPDATE users SET can_add = 0 WHERE user_id = inputUserID ;
  ELSE
         UPDATE users SET can_add = 1 WHERE user_id = inputUserID ;
  END IF;
  RETURN 0;
+ END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION AddUserToGroup(inputGroupID varchar(25), inputUserID varchar(25), inputCreatorID varchar(25))
+ RETURNS TABLE(
+ user_id varchar
+ ) AS $$
+ BEGIN
+ IF ( (SELECT count(*) FROM gp WHERE creator = inputCreatorID AND gp_id = inputGroupID ) > 0  AND  (SELECT can_add FROM users WHERE users.user_id = inputUserID) > 0  )THEN
+ 	INSERT INTO gp_users(user_id, gp_id) VALUES (inputUserID, inputGroupID);
+ END IF;
+ RETURN QUERY SELECT gp_users.user_id::varchar(25)
+ FROM gp_users WHERE gp_users.gp_id = inputGroupID ;
  END;
 $$ LANGUAGE plpgsql;
 

@@ -511,6 +511,266 @@
 				"description": "get one vote "
 			},
 			"response": []
+		},
+		{
+			"name": "getuserid",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"abtin\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getuserid",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getuserid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addgroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"dorehami guys\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/addgroup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"addgroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removegroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"gp_id\": \"Group9823sdf\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/removegroup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"removegroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change can add",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/changecanadd",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"changecanadd"
+					]
+				},
+				"description": "changes user can_add value"
+			},
+			"response": []
+		},
+		{
+			"name": "addusertogroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"user_id\":\"User8b60c95c40b549f\",\n \"gp_id\":\"Group82877c4f6d7249f\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/addusertogroup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"addusertogroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getallgroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getallgroup",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getallgroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get group members",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJVc2VyYmE3ZmM4YmEzNmQwNGFiIn0.DKQc4_n7UHqnH7gbKjYFA_oChdTivbjdYV6I86t0r8g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"gp_id\": \"Group82877c4f6d7249f\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/getgroupmembers",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"getgroupmembers"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
