@@ -4,6 +4,75 @@ import psycopg2
 import json as js
 
 
+
+def removeUserFromPoll(token,json):
+    if 'user_id' not in json:
+        return response.json({'message': 'user_id Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=406)
+    if 'poll_id' not in json:
+        return response.json({'message': 'poll_id Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=406)
+    token_result = tokenIsValid(token)
+    if token_result["status"] == 'OK':
+        try:
+            params = [json["poll_id"], json["user_id"], token_result["user"]]
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.callproc('RemoveUserFromPoll', params)
+            data = cur.fetchall()
+            conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            data = error
+        finally:
+            if conn is not None:
+                conn.close()
+        return response.json(
+                {'message': 'OK!',"data":data},
+            headers={'X-Served-By': 'sanic'},
+            status=200)
+    else:
+        return response.json({'message': 'Token invalid'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=500)
+
+
+def removeUserFromGroup(token,json):
+    if 'user_id' not in json:
+        return response.json({'message': 'user_id Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=406)
+    if 'gp_id' not in json:
+        return response.json({'message': 'gp_id Empty'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=406)
+    token_result = tokenIsValid(token)
+    if token_result["status"] == 'OK':
+        try:
+            params = [json["gp_id"], json["user_id"], token_result["user"]]
+            conn = makeConn()
+            cur = conn.cursor()
+            cur.callproc('RemoveUserFromGroup', params)
+            data = cur.fetchall()
+            conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            data = error
+        finally:
+            if conn is not None:
+                conn.close()
+        return response.json(
+                {'message': 'OK!',"data":data},
+            headers={'X-Served-By': 'sanic'},
+            status=200)
+    else:
+        return response.json({'message': 'Token invalid'},
+                             headers={'X-Served-By': 'sanic'},
+                             status=500)
+
+
 def removeGroup(token, json):
     if 'gp_id' not in json:
         return response.json({'message': 'gp_id Empty'},

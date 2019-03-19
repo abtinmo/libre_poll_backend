@@ -1,7 +1,4 @@
 validate email
-function remove user from group
-make user_poll_access relation , for give access to user
-remove user_poll_access , for remove access of user
 make user_poll_access realation for all users of group
 remove user_poll_access relation for all users of group
 get all users with access to poll

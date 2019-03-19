@@ -1,15 +1,35 @@
 from sanic.blueprints import Blueprint
 from sanic.response import json, text
-from db.insert import insertUser, setEmail, addPoll, doVote, editPoll, addGroup, changeCanAdd, addUserToGroup
+from db.insert import insertUser, setEmail, addPoll, doVote, editPoll, addGroup, changeCanAdd, addUserToGroup, addUserToPoll
 from db.query import getToken, userExists, emailExists, getPolls, getPoll, getVote, getVotes, userIDToUsername, usernameToUserID, getAllgroup, getGroupmembers
-from db.delete import removeUser, removePoll, removeVote, removeGroup
+from db.delete import removeUser, removePoll, removeVote, removeGroup, removeUserFromGroup, removeUserFromPoll
 bp = Blueprint('view_user')
+
+
+
+@bp.route("/removeuserfrompoll", methods=["POST"])
+async def removeuserfrompoll(request):
+    token = request.headers.get("token")
+    return removeUserFromPoll(token, request.json)
+
+
+@bp.route("/addusertopoll", methods=["POST"])
+async def addusertopoll(request):
+    token = request.headers.get("token")
+    return addUserToPoll(token, request.json)
+
+
+@bp.route("/removeuserfromgroup", methods=["POST"])
+async def removeuserfromgroup(request):
+    token = request.headers.get("token")
+    return removeUserFromGroup(token, request.json)
 
 
 @bp.route("/addusertogroup", methods=["POST"])
 async def addusertogroup(request):
     token = request.headers.get("token")
     return addUserToGroup(token, request.json)
+
 
 @bp.route("/changecanadd", methods=["POST"])
 async def changecanadd(request):

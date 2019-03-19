@@ -64,3 +64,43 @@ CREATE OR REPLACE FUNCTION AddUserToGroup(inputGroupID varchar(25), inputUserID 
  END;
 $$ LANGUAGE plpgsql;
 
+
+CREATE OR REPLACE FUNCTION RemoveUserFromGroup(inputGroupID varchar(25), inputUserID varchar(25), inputCreatorID varchar(25))
+ RETURNS TABLE(
+ user_id varchar
+ ) AS $$
+ BEGIN
+ IF (SELECT count(*) FROM gp WHERE creator = inputCreatorID AND gp_id = inputGroupID ) > 0 THEN
+ 	DELETE FROM gp_users WHERE gp_users.user_id = inputUserID AND  gp_id = inputGroupID;
+ END IF;
+ RETURN QUERY SELECT gp_users.user_id::varchar(25)
+ FROM gp_users WHERE gp_users.gp_id = inputGroupID ;
+ END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION AddUserToPoll(inputPollID varchar(25), inputUserID varchar(25), inputCreatorID varchar(25))
+ RETURNS TABLE(
+ user_id varchar
+ ) AS $$
+ BEGIN
+ IF ( (SELECT count(*) FROM polls WHERE creator = inputCreatorID AND poll_id = inputPollID ) > 0  AND  (SELECT can_add FROM users WHERE users.user_id = inputUserID) > 0  )THEN
+ 	INSERT INTO user_poll_access (user_id, poll_id) VALUES (inputUserID, inputPollID);
+ END IF;
+ RETURN QUERY SELECT user_poll_access.user_id::varchar(25)
+ FROM user_poll_access WHERE user_poll_access.poll_id = inputPollID ;
+ END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION RemoveUserFromPoll(inputPollID varchar(25), inputUserID varchar(25), inputCreatorID varchar(25))
+ RETURNS TABLE(
+ user_id varchar
+ ) AS $$
+ BEGIN
+ IF (SELECT count(*) FROM polls WHERE creator = inputCreatorID AND poll_id = inputPollID ) > 0 THEN
+ 	DELETE FROM user_poll_access WHERE user_poll_access.user_id = inputUserID AND  poll_id = inputPollID;
+ END IF;
+ RETURN QUERY SELECT user_poll_access.user_id::varchar(25)
+ FROM user_poll_access WHERE user_poll_access.poll_id = inputPollID;
+ END;
+$$ LANGUAGE plpgsql;
