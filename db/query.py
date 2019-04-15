@@ -88,7 +88,7 @@ def userIDToUsername(json):
 def usernameToUserID(json):
     sql = '''SELECT user_id FROM users WHERE username = %s;'''
     if 'username' not in json:
-        return response.json({'message': 'user_id is  Empty'},
+        return response.json({'message': 'Username is  Empty'},
                              headers={'X-Served-By': 'sanic'},
                              status=401)
     conn = None
