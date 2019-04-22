@@ -1,3 +1,4 @@
+send emial in thread
 validate email
 make user_poll_access realation for all users of group
 remove user_poll_access relation for all users of group
